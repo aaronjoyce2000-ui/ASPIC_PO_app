@@ -4,22 +4,40 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ASPIC II · Purchase Orders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <div class="brand">
-      <span class="brand-mark">ASPIC II</span>
-      <span class="brand-sub">Purchase orders</span>
+<div class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-top">
+      <div class="wordmark">
+        <span class="wordmark-main">ASPIC&nbsp;II</span>
+        <span class="wordmark-tag">Promotional&nbsp;Products&nbsp;&amp;&nbsp;Decorated&nbsp;Apparel</span>
+      </div>
+      <div class="masthead-meta">
+        <span>15 S Boulevard Ave, Maple Shade NJ</span>
+        <span class="dot-sep">856-534-0505</span>
+        <span class="dot-sep">ASI 101608 · PPAI 277529</span>
+      </div>
     </div>
-    <nav class="tabs" role="tablist">
-      <button class="tab active" data-tab="new" role="tab" aria-selected="true">New PO</button>
-      <button class="tab" data-tab="log" role="tab" aria-selected="false">PO Log</button>
-    </nav>
+    <div class="masthead-bottom">
+      <h1>Purchase orders, made &amp; filed in one pass.</h1>
+      <nav class="tag-nav" role="tablist" aria-label="Sections">
+        <button class="tag active" data-tab="new" role="tab" aria-selected="true">
+          <span class="tag-hole"></span>New PO
+        </button>
+        <button class="tag" data-tab="log" role="tab" aria-selected="false">
+          <span class="tag-hole"></span>PO Log
+        </button>
+      </nav>
+    </div>
   </div>
-</header>
+  <div class="stitch-divider" aria-hidden="true"></div>
+</div>
 
 <main class="wrap">
 
@@ -27,7 +45,7 @@
   <section id="panel-new" class="panel active">
     <form id="po-form" novalidate>
 
-      <div class="card">
+      <div class="card card-accent">
         <div class="card-row top-row">
           <div class="field">
             <label for="date">Date</label>
@@ -48,7 +66,7 @@
       </div>
 
       <div class="card">
-        <h2>Order details</h2>
+        <h2><span class="card-kicker">01</span>Order details</h2>
         <div class="grid-3">
           <div class="field">
             <label for="phone_contact">Phone / contact</label>
@@ -74,7 +92,7 @@
       </div>
 
       <div class="card">
-        <h2>Line items</h2>
+        <h2><span class="card-kicker">02</span>Line items</h2>
         <div class="table-scroll">
           <table class="items-table" id="items-table">
             <thead>
@@ -98,13 +116,13 @@
       </div>
 
       <div class="card">
-        <h2>Specifications</h2>
+        <h2><span class="card-kicker">03</span>Specifications</h2>
         <textarea id="specifications" name="specifications" rows="5"
           placeholder="Item #, sizes breakdown, garment color, ink/thread color, imprint area, decoration method, delivered-by vendor, etc."></textarea>
       </div>
 
       <div class="card">
-        <h2>Authorization</h2>
+        <h2><span class="card-kicker">04</span>Authorization</h2>
         <div class="grid-3">
           <div class="field">
             <label for="authorized_by">Authorized by</label>
@@ -130,9 +148,25 @@
 
   <!-- ===================== PO LOG ===================== -->
   <section id="panel-log" class="panel">
+
+    <div class="stat-strip">
+      <div class="stat-card">
+        <span class="stat-value" id="stat-count">0</span>
+        <span class="stat-label">Purchase orders</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="stat-total">$0</span>
+        <span class="stat-label">Total value</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="stat-open">0</span>
+        <span class="stat-label">Awaiting confirmation</span>
+      </div>
+    </div>
+
     <div class="card">
       <div class="log-toolbar">
-        <h2>All purchase orders</h2>
+        <h2><span class="card-kicker">&#9670;</span>All purchase orders</h2>
         <div class="log-toolbar-actions">
           <input type="search" id="log-search" placeholder="Search PO #, customer, supplier…" />
           <button type="button" id="export-csv" class="ghost-btn">Export CSV</button>
@@ -162,6 +196,10 @@
   </section>
 
 </main>
+
+<footer class="site-footer">
+  <span>ASPIC II</span><span class="dot-sep">15 S Boulevard Ave, Maple Shade, NJ 08052</span><span class="dot-sep">856-534-0505</span>
+</footer>
 
 <div id="toast" class="toast" hidden></div>
 

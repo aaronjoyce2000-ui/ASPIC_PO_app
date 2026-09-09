@@ -30,9 +30,9 @@ function toast(msg, isError = false) {
 }
 
 // ---------------------------------------------------------------- tabs
-$$(".tab").forEach((tab) => {
+$$(".tag").forEach((tab) => {
   tab.addEventListener("click", () => {
-    $$(".tab").forEach((t) => { t.classList.remove("active"); t.setAttribute("aria-selected", "false"); });
+    $$(".tag").forEach((t) => { t.classList.remove("active"); t.setAttribute("aria-selected", "false"); });
     tab.classList.add("active");
     tab.setAttribute("aria-selected", "true");
     $$(".panel").forEach((p) => p.classList.remove("active"));
@@ -225,9 +225,19 @@ async function loadLog() {
     const res = await fetch(API);
     logCache = await res.json();
     renderLog(logCache);
+    renderStats(logCache);
   } catch (err) {
     body.innerHTML = `<tr><td colspan="8" class="empty-row">Couldn't load the log. Try refresh.</td></tr>`;
   }
+}
+
+function renderStats(rows) {
+  const count = rows.length;
+  const total = rows.reduce((sum, o) => sum + (parseFloat(o.total) || 0), 0);
+  const open = rows.filter((o) => ["Draft", "Submitted"].includes(o.status)).length;
+  $("#stat-count").textContent = count;
+  $("#stat-total").textContent = total.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+  $("#stat-open").textContent = open;
 }
 
 function renderLog(rows) {
@@ -284,6 +294,7 @@ $("#log-body").addEventListener("change", async (e) => {
       body: JSON.stringify(record),
     });
     toast(`PO ${po} marked ${record.status}`);
+    renderStats(logCache);
   } catch {
     toast("Couldn't update status", true);
   }
@@ -307,6 +318,7 @@ $("#log-body").addEventListener("click", async (e) => {
       await fetch(`${API}?po_number=${encodeURIComponent(po)}`, { method: "DELETE" });
       logCache = logCache.filter((o) => o.po_number !== po);
       renderLog(logCache);
+      renderStats(logCache);
       toast(`PO ${po} deleted`);
     } catch {
       toast("Couldn't delete this PO", true);
