@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ASPIC II · Purchase Orders</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">ASPIC II</span>
+      <span class="brand-sub">Purchase orders</span>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="new" role="tab" aria-selected="true">New PO</button>
+      <button class="tab" data-tab="log" role="tab" aria-selected="false">PO Log</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ===================== NEW PO ===================== -->
+  <section id="panel-new" class="panel active">
+    <form id="po-form" novalidate>
+
+      <div class="card">
+        <div class="card-row top-row">
+          <div class="field">
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required />
+          </div>
+          <div class="field">
+            <label for="po_number">PO number</label>
+            <div class="po-number-row">
+              <input type="text" id="po_number" name="po_number" placeholder="25-00126" required />
+              <button type="button" id="suggest-po" class="ghost-btn" title="Suggest the next PO number">Suggest</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="date_needed">Date needed</label>
+            <input type="date" id="date_needed" name="date_needed" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Order details</h2>
+        <div class="grid-3">
+          <div class="field">
+            <label for="phone_contact">Phone / contact</label>
+            <input type="text" id="phone_contact" name="phone_contact" placeholder="856-534-0505 / Adrienne Joyce" />
+          </div>
+          <div class="field">
+            <label for="supplier">Supplier</label>
+            <input type="text" id="supplier" name="supplier" placeholder="SanMar" />
+          </div>
+          <div class="field">
+            <label for="quote_number">Quote number</label>
+            <input type="text" id="quote_number" name="quote_number" />
+          </div>
+          <div class="field">
+            <label for="customer">Customer</label>
+            <input type="text" id="customer" name="customer" placeholder="VFW" required />
+          </div>
+          <div class="field">
+            <label for="customer_po">Customer P.O.</label>
+            <input type="text" id="customer_po" name="customer_po" placeholder="CLAM BAKE" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Line items</h2>
+        <div class="table-scroll">
+          <table class="items-table" id="items-table">
+            <thead>
+              <tr>
+                <th class="col-qty">Qty</th>
+                <th class="col-unit">Unit</th>
+                <th class="col-desc">Product description</th>
+                <th class="col-cost">Unit cost</th>
+                <th class="col-ext">Extension</th>
+              </tr>
+            </thead>
+            <tbody id="items-body"><!-- rows injected by app.js --></tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4" class="total-label">Order total</td>
+                <td class="total-value" id="order-total">$0.00</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Specifications</h2>
+        <textarea id="specifications" name="specifications" rows="5"
+          placeholder="Item #, sizes breakdown, garment color, ink/thread color, imprint area, decoration method, delivered-by vendor, etc."></textarea>
+      </div>
+
+      <div class="card">
+        <h2>Authorization</h2>
+        <div class="grid-3">
+          <div class="field">
+            <label for="authorized_by">Authorized by</label>
+            <input type="text" id="authorized_by" name="authorized_by" />
+          </div>
+          <div class="field">
+            <label for="date_signed">Date</label>
+            <input type="date" id="date_signed" name="date_signed" />
+          </div>
+          <div class="field">
+            <label for="vendor_confirm">Vendor confirm #</label>
+            <input type="text" id="vendor_confirm" name="vendor_confirm" />
+          </div>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <span id="form-status" class="form-status"></span>
+        <button type="submit" class="primary-btn" id="submit-btn">Create PO &amp; download PDF</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ===================== PO LOG ===================== -->
+  <section id="panel-log" class="panel">
+    <div class="card">
+      <div class="log-toolbar">
+        <h2>All purchase orders</h2>
+        <div class="log-toolbar-actions">
+          <input type="search" id="log-search" placeholder="Search PO #, customer, supplier…" />
+          <button type="button" id="export-csv" class="ghost-btn">Export CSV</button>
+          <button type="button" id="refresh-log" class="ghost-btn">Refresh</button>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="log-table">
+          <thead>
+            <tr>
+              <th>PO #</th>
+              <th>Date</th>
+              <th>Customer</th>
+              <th>Customer P.O.</th>
+              <th>Supplier</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="log-body">
+            <tr><td colspan="8" class="empty-row">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
