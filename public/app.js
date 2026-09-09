@@ -176,6 +176,14 @@ async function fillAndDownloadPDF(data) {
   setTimeout(() => URL.revokeObjectURL(url), 4000);
 }
 
+// ---------------------------------------------------------------- reset
+function resetForm() {
+  form.reset();
+  buildRows();       // wipe the 8 line-item rows back to blank
+  recalcTotals();     // reset the $0.00 total
+  $("#date").value = todayISO(); // keep "today" pre-filled for convenience
+}
+
 // ---------------------------------------------------------------- submit
 const form = $("#po-form");
 const statusEl = $("#form-status");
@@ -201,9 +209,11 @@ form.addEventListener("submit", async (e) => {
     if (!res.ok) throw new Error((await res.json()).error || "Save failed");
 
     await fillAndDownloadPDF(data);
-    statusEl.textContent = `Saved PO ${data.po_number} to the log.`;
+    const savedPoNumber = data.po_number;
+    resetForm();
+    statusEl.textContent = `Saved PO ${savedPoNumber} to the log. Form cleared for the next order.`;
     statusEl.className = "form-status success";
-    toast(`PO ${data.po_number} created and downloaded`);
+    toast(`PO ${savedPoNumber} created and downloaded`);
   } catch (err) {
     console.error(err);
     statusEl.textContent = "Something went wrong — see below.";
